@@ -1,0 +1,3 @@
+C:/Users/User/Math/dataStruct2/HW/Wet/Wet1.2/cmake-build-debug/CMakeFiles/Wet1_2.dir
+C:/Users/User/Math/dataStruct2/HW/Wet/Wet1.2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/User/Math/dataStruct2/HW/Wet/Wet1.2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
