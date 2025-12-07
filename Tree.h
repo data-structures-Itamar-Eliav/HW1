@@ -48,7 +48,10 @@ private:
     // Update the height of a node based on its children.
     void updateHeight(Node<T>* node) {
         if (node != nullptr) {
-            node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+            const int leftHeight = getHeight(node->left);
+            const int rightHeight = getHeight(node->right);
+            const int max = leftHeight > rightHeight ? leftHeight : rightHeight;
+            node->height = 1 + max;
         }
     }
 
@@ -308,21 +311,6 @@ public:
         return root == nullptr;
     }
 };
-
-
-// Helper funcs:
-
-/**
- * @brief Returns the maximum of two integers.
- * IDE has warned me to use inline here, because this function is defined in a header file.
- *
- * @param a First integer.
- * @param b Second integer.
- * @return The maximum of a and b.
- */
-inline int max(const int a, const int b) {
-    return a > b ? a : b;
-}
 
 
 #endif //TREE_H
