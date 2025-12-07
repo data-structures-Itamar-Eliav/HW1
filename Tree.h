@@ -100,7 +100,12 @@ private:
         return newRoot;
     }
 
-    // Rebalance a node if needed.
+    /**
+     * @brief Rebalance the given node if it has become unbalanced.
+     *
+     * @param node The node to rebalance.
+     * @return The new root of the subtree after rebalancing.
+     */
     Node<T>* rebalance(Node<T>* node) {
         // Update the height of this ancestor node, while backtracking in the recursion.
         updateHeight(node);
@@ -138,7 +143,14 @@ private:
 
 // insertion, deletion:
 
-    // Recursive insert function.
+    /**
+     * @brief Insert a key into the AVL tree rooted at node recursively.
+     *
+     * @param node The root of the subtree where to insert the key.
+     * @param key The key to insert.
+     * @return The new root of the subtree after insertion and rebalancing.
+     * @throws KeyExistsException if the key already exists in the tree.
+     */
     Node<T>* insert(Node<T>* node,T key) {
         // Found null position, insert here.
         if (node == nullptr) {
@@ -158,6 +170,8 @@ private:
         // Rebalance the node if needed and return the (possibly new) root.
         return rebalance(node);
     }
+
+
 };
 
 
