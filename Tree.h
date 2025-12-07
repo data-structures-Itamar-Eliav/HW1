@@ -7,9 +7,9 @@ class KeyExistsException {};
 class KeyNotFoundException {};
 
 /**
- *@brief A node in a binary tree.
- *@tparam T The type of the key stored in the node.
-*/
+  *@brief A node in a binary tree.
+  *@tparam T The type of the key stored in the node.
+ */
 template <typename T>
 struct Node
 {
@@ -22,6 +22,11 @@ struct Node
 };
 
 
+/**
+ * @brief A generic AVL Tree implementation.
+ *
+ * @tparam T The type of the keys stored in the tree.
+ */
 template <typename T>
 class Tree
 {
@@ -30,12 +35,12 @@ private:
 
     // Helper functions for AVL tree balancing:
 
-    int getHeight(Node<T>* node) {
+    int getHeight(const Node<T>* node) const {
         // if node is nullptr, height is 0.
         return node ? node->height : 0;
     }
 
-    int getBalance(Node<T>* node) {
+    int getBalance(const Node<T>* node) const {
         // if node is nullptr, balance is 0.
         return node ? getHeight(node->left) - getHeight(node->right) : 0;
     }
@@ -48,7 +53,7 @@ private:
     }
 
     // Find the node with the minimum key value in the given subtree.
-    Node<T>* minValueNode(Node<T>* node) {
+    Node<T>* minValueNode(Node<T>* node) const {
         Node<T>* current = node;
         while (current->left != nullptr)
             current = current->left;
@@ -154,7 +159,7 @@ private:
      * @return The new root of the subtree after insertion and rebalancing.
      * @throws KeyExistsException if the key already exists in the tree.
      */
-    Node<T>* insert(Node<T>* node, T key) {
+    Node<T>* insert(Node<T>* node, const T& key) {
         // Found null position, insert here.
         if (node == nullptr) {
             return new Node<T>(key);
@@ -175,7 +180,7 @@ private:
     }
 
     // Delete:
-    Node<T>* remove(Node<T>* node, T key) {
+    Node<T>* remove(Node<T>* node, const T& key) {
         // Key is not in Tree.
         if (node == nullptr) {
             throw KeyNotFoundException();
@@ -194,7 +199,7 @@ private:
                 // Get the smallest node in the right subtree:
                 Node<T>* temp = minValueNode(node->right);
                 node->key = temp->key; // Copy data, no memory problems.
-                node->right = remove(node->right, temp->key);// delete the min node.
+                node->right = remove(node->right, temp->key); // delete the min node.
             } else {
                 // if we reach here, the node has at most one child.
                 // Get the non-null child, if any:
@@ -224,7 +229,7 @@ private:
      * @return Pointer to the node with the given key.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    Node<T>* find(Node<T>* node, T key) {
+    Node<T>* find(Node<T>* node, const T& key) const {
         // Not in tree:
         if (node == nullptr) {
             throw KeyNotFoundException();
@@ -252,7 +257,7 @@ private:
         }
     }
 
-//----------------------------------------------------------------
+    //----------------------------------------------------------------
 
 public:
     // Constructor:
@@ -269,7 +274,7 @@ public:
      * @param key The key to insert.
      * @throws KeyExistsException if the key already exists in the tree.
      */
-    void insert(T key) {
+    void insert(const T& key) {
         root = insert(root, key);
     }
 
@@ -279,7 +284,7 @@ public:
      * @param key The key to remove.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    void remove(T key) {
+    void remove(const T& key) {
         root = remove(root, key);
     }
 
@@ -290,7 +295,7 @@ public:
      * @return Pointer to the node with the given key.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    Node<T>* find(T key) {
+    Node<T>* find(const T& key) const {
         return find(root, key);
     }
 
