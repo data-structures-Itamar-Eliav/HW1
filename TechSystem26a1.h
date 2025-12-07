@@ -14,6 +14,7 @@
 #define TechSystem26WINTER_WET1_H_
 
 #include "wet1util.h"
+#include <memory>
 
 class TechSystem {
 private:
@@ -22,16 +23,59 @@ private:
         int id;
         int points;
         int bonusPoints;
-
+        int amountOfRegisterdCourses;
     public:
         Student () {
+            this->id = 0;
+            this->points = 0;
+            this->bonusPoints = 0;
+            this->amountOfRegisterdCourses = 0;
         }
+        Student(int id) {
+            this->id = id;
+            this->points = 0;
+            this->bonusPoints = 0;
+            this->amountOfRegisterdCourses = 0;
+        }
+
+        int getId () {return this->id;}
+        int getPoints () {return this->points;}
+        void setPoints (int pts) {this->points = pts;}
+        void addPoints (int pts) {this->points += pts;}
     };
     class Course {
-        private int id;
-        private int points;
-        private Tree<Student>* studentTree;
+    private:
+        int id;
+        int points;
+        Tree<std::shared_ptr<Student>> studentTree;
+
+    public:
+        Course () {
+            this->id = 0;
+            this->points = 0;
+            this->studentTree = Tree<std::shared_ptr<Student>>();
+        }
+        Course (int id, int points) {
+            this->id = id;
+            this->points = points;
+            this->studentTree = Tree<std::shared_ptr<Student>>();
+        }
+
+        int getPoints () {
+            return this->points;
+        }
+
+        void AddStudent (int studentId){
+            this->studentTree.Insert(studentId);
+        }
+        void RemoveStudent (int studentId) {
+            this->studentTree.Delete(studentId);
+        }
+
+
     };
+    Tree<Course> systemCourses;
+    Tree<Student> systemStudents;
     
 public:
     // <DO-NOT-MODIFY> {
