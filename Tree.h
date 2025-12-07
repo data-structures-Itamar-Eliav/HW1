@@ -4,6 +4,8 @@
 // Exceptions:
 class KeyExistsException {};
 
+class KeyNotFoundException {};
+
 /**
  *@brief A node in a binary tree.
  *@tparam T The type of the key stored in the node.
@@ -33,7 +35,7 @@ public:
 private:
     Node<T>* root;
 
-// Helper functions for AVL tree balancing:
+    // Helper functions for AVL tree balancing:
 
     int getHeight(Node<T>* node) {
         // if node is nullptr, height is 0.
@@ -52,7 +54,15 @@ private:
         }
     }
 
-// Rotations:
+    // Find the node with the minimum key value in the given subtree.
+    Node<T>* minValueNode(Node<T>* node) {
+        Node<T>* current = node;
+        while (current->left != nullptr)
+            current = current->left;
+        return current;
+    }
+
+    // Rotations:
 
     /**
      * @brief Perform a right rotation on the given subtree rooted with head.
@@ -141,7 +151,7 @@ private:
         return node;
     }
 
-// insertion, deletion:
+    // insertion, deletion:
 
     /**
      * @brief Insert a key into the AVL tree rooted at node recursively.
@@ -151,7 +161,7 @@ private:
      * @return The new root of the subtree after insertion and rebalancing.
      * @throws KeyExistsException if the key already exists in the tree.
      */
-    Node<T>* insert(Node<T>* node,T key) {
+    Node<T>* insert(Node<T>* node, T key) {
         // Found null position, insert here.
         if (node == nullptr) {
             return new Node<T>(key);
@@ -171,7 +181,47 @@ private:
         return rebalance(node);
     }
 
+    // Delete:
+    Node<T>* remove(Node<T>* node, T key) {
+        // Key is not in Tree.
+        if (node == nullptr) {
+            throw KeyNotFoundException();
+        }
 
+        // Traverse the tree to find the node to delete recursively.
+        if (key < node->key) {
+            node->left = remove(node->left, key);
+        } else if (key > node->key) {
+            node->right = remove(node->right, key);
+        } else { // Node with the key found.
+            // Two cases - Node with two children, or one/no child:
+
+            // Node with two children, if left and right are not nullptr:
+            if (node->left && node->right) {
+                // Get the smallest node in the right subtree:
+                Node<T>* temp = minValueNode(node->right);
+                node->key = temp->key; // Copy data, no memory problems.
+                node->right = remove(node->right, temp->key);// delete the min node.
+            } else {
+                // if we reach here, the node has at most one child.
+                // Get the non-null child, if any:
+                Node<T>* child = node->left ? node->left : node->right;
+
+                // Delete the node and return the child to link to parent.
+                Node<T>* temp = node;
+                node = child; // could be nullptr if no children.
+                delete temp; // remove the requested key.
+
+                // No need to rebalance if node is now nullptr.
+                if (node == nullptr) {
+                    return nullptr;
+                }
+            }
+        }
+
+        // Rebalance the node if needed and return the (possibly new) root:
+        return rebalance(node);
+    }
 };
 
 
