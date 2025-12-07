@@ -25,13 +25,6 @@ struct Node
 template <typename T>
 class Tree
 {
-public:
-    Tree() : root(nullptr) {}
-
-    ~Tree() {
-        // Implement a destructor to free memory if needed.
-    }
-
 private:
     Node<T>* root;
 
@@ -245,7 +238,7 @@ private:
         // Traverse left or right:
         if (key < node->key) {
             return find(node->left, key);
-        } else { // Key is greater than node's key, search in right subtree.
+        } else {
             return find(node->right, key);
         }
     }
@@ -257,6 +250,57 @@ private:
             destroyTree(node->right);
             delete node;
         }
+    }
+
+//----------------------------------------------------------------
+
+public:
+    // Constructor:
+    Tree() : root(nullptr) {}
+
+    // Destructor:
+    ~Tree() {
+        destroyTree(root);
+    }
+
+    /**
+     * @brief Public insert method.
+     *
+     * @param key The key to insert.
+     * @throws KeyExistsException if the key already exists in the tree.
+     */
+    void insert(T key) {
+        root = insert(root, key);
+    }
+
+    /**
+     * @brief Public remove method.
+     *
+     * @param key The key to remove.
+     * @throws KeyNotFoundException if the key is not found in the tree.
+     */
+    void remove(T key) {
+        root = remove(root, key);
+    }
+
+    /**
+     * @brief Public find method.
+     *
+     * @param key The key to find.
+     * @return Pointer to the node with the given key.
+     * @throws KeyNotFoundException if the key is not found in the tree.
+     */
+    Node<T>* find(T key) {
+        return find(root, key);
+    }
+
+    /**
+     * @brief Check if the tree is empty.
+     *
+     * @return true if the tree is empty, false otherwise.
+     */
+    bool isEmpty() const {
+        return root == nullptr;
     }
 };
 
