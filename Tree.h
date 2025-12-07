@@ -222,6 +222,42 @@ private:
         // Rebalance the node if needed and return the (possibly new) root:
         return rebalance(node);
     }
+
+    /**
+     * @brief Find a node with the given key in the AVL tree rooted at node.
+     *
+     * @param node The root of the subtree to search.
+     * @param key The key to find.
+     * @return Pointer to the node with the given key.
+     * @throws KeyNotFoundException if the key is not found in the tree.
+     */
+    Node<T>* find(Node<T>* node, T key) {
+        // Not in tree:
+        if (node == nullptr) {
+            throw KeyNotFoundException();
+        }
+
+        // Key found:
+        if (key == node->key) {
+            return node;
+        }
+
+        // Traverse left or right:
+        if (key < node->key) {
+            return find(node->left, key);
+        } else { // Key is greater than node's key, search in right subtree.
+            return find(node->right, key);
+        }
+    }
+
+    // Destroy the tree recursively:
+    void destroyTree(Node<T>* node) {
+        if (node != nullptr) {
+            destroyTree(node->left);
+            destroyTree(node->right);
+            delete node;
+        }
+    }
 };
 
 
