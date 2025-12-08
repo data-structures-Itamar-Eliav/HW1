@@ -14,7 +14,8 @@
 #define TechSystem26WINTER_WET1_H_
 
 #include "wet1util.h"
-
+#include "Tree.h"
+#include <memory>
 class TechSystem {
 private:
 class Student{
@@ -40,6 +41,46 @@ class Student{
         bool operator==(const Student& other) const{
             return this->id == other.id;
         }
+};
+class Course{
+public:
+    int id;
+    int points;
+    Tree<std::shared_ptr<Student>> students;
+
+    Course() {
+        this->id = 0;
+        this->points = 0;
+        this->students = Tree<std::shared_ptr<Student>>();
+    }
+    Course(int id) : Course() {
+        this->id = id;
+    }
+    Course(int id, int points) {
+        this->id = id;
+        this->points = points;
+        this->students = Tree<std::shared_ptr<Student>>();
+    }
+    ~Course() {
+
+    }
+
+    bool operator<(const Course& other) const {
+        return this->id < other.id;
+    }
+    bool operator==(const Course& other) const {
+        return this->id == other.id;
+    }
+
+    void addStudent (const Student& student) {
+        std::shared_ptr<Student> studentPtr = std::make_shared(&student);
+        this->students.insert(studentPtr);
+    }
+
+    void removeStudent (const Student& student) {
+        std::shared_ptr<Student> studentPtr = std::make_shared(&student);
+        this->students.remove(studentPtr);
+    }
 };
 public:
     // <DO-NOT-MODIFY> {
