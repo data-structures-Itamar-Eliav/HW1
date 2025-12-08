@@ -22,21 +22,28 @@ class Student{
     public:
         int id;
         int points;
+        int numOfCourses;
         Student() {
             this->id = 0;
             this->points = 0;
+            this->numOfCourses = 0;
         }
         Student(int id) {
             this->id = id;
             this->points = 0;
+            this->numOfCourses = 0;
         }
         Student(int id, int points) {
             this->id = id;
             this->points = points;
+            this->numOfCourses = 0;
         }
 
         bool operator<(const Student& other) const{
             return this->id < other.id;
+        }
+        bool operator>(const Student& other) const{
+            return this->id > other.id;
         }
         bool operator==(const Student& other) const{
             return this->id == other.id;
@@ -68,23 +75,26 @@ public:
     bool operator<(const Course& other) const {
         return this->id < other.id;
     }
+    bool operator>(const Course& other) const {
+        return this->id > other.id;
+    }
     bool operator==(const Course& other) const {
         return this->id == other.id;
     }
 
-    void addStudent (const Student& student) {
-        std::shared_ptr<Student> studentPtr = std::make_shared(&student);
+    void addStudent (std::shared_ptr<Student> studentPtr) {
         this->students.insert(studentPtr);
+        studentPtr->numOfCourses++;
     }
 
-    void removeStudent (const Student& student) {
-        std::shared_ptr<Student> studentPtr = std::make_shared(&student);
+    void removeStudent (std::shared_ptr<Student> studentPtr) {
         this->students.remove(studentPtr);
+        studentPtr->numOfCourses--;
     }
 };
 
-Tree<Student> studentSystem;
-Tree<Course> courseSystem;
+Tree<Student> studentSystem = Tree<Student>();
+Tree<Course> courseSystem = Tree<Course>();
 public:
     // <DO-NOT-MODIFY> {
     TechSystem();
