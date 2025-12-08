@@ -5,8 +5,7 @@
 
 
 TechSystem::TechSystem() {
-    this->studentSystem = new Tree<Student>();
-    this->courseSystem = new Tree<Course>();
+
 }
 
 TechSystem::~TechSystem()
@@ -16,7 +15,7 @@ TechSystem::~TechSystem()
 
 StatusType TechSystem::addStudent(int studentId)
 {
-    if (studentId <= 0) {return StatusType::INVALID_INPUT}
+    if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         Student student = Student(studentId);
         this->studentSystem.insert(student);
@@ -31,6 +30,18 @@ StatusType TechSystem::addStudent(int studentId)
 
 StatusType TechSystem::removeStudent(int studentId)
 {
+    if (studentId <= 0) {return StatusType::INVALID_INPUT;}
+    try {
+        Student student = Student(studentId);
+        if (this->studentSystem.find(student)->key.numOfCourses > 0) {
+            return StatusType::FAILURE;
+        }
+        this->studentSystem.remove(student);
+    } catch (std::bad_alloc) {
+        return StatusType::ALLOCATION_ERROR;
+    } catch (...) {
+        return StatusType::FAILURE;
+    }
     return StatusType::FAILURE;
 }
 
