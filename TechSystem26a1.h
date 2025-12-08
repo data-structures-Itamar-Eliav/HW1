@@ -93,8 +93,8 @@ public:
     }
 };
 
-Tree<Student> studentSystem = Tree<Student>();
-Tree<Course> courseSystem = Tree<Course>();
+Tree<std::shared_ptr<Student>> studentSystem = Tree<std::shared_ptr<Student>>();
+Tree<std::shared_ptr<Course>> courseSystem = Tree<std::shared_ptr<Course>>();
 public:
     // <DO-NOT-MODIFY> {
     TechSystem();

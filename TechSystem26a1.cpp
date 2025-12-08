@@ -17,8 +17,9 @@ StatusType TechSystem::addStudent(int studentId)
 {
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        Student student = new Student(studentId);
-        this->studentSystem.insert(student);
+        std::shared_ptr<Student> studentPtr =
+                std::make_shared<Student>(studentId);
+        this->studentSystem.insert(studentPtr);
         return StatusType::SUCCESS;
     } catch (std::bad_alloc) {
         return StatusType::ALLOCATION_ERROR;
@@ -32,11 +33,14 @@ StatusType TechSystem::removeStudent(int studentId)
 {
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        Student student = Student(studentId);
-        if (this->studentSystem.find(student)->key.numOfCourses > 0) {
+        std::shared_ptr<Student> studentPtr =
+                std::make_shared<Student>(studentId);
+
+        if (this->studentSystem.find(studentPtr)->key->numOfCourses > 0) {
             return StatusType::FAILURE;
         }
-        this->studentSystem.remove(student);
+        this->studentSystem.remove(studentPtr);
+
     } catch (std::bad_alloc) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
