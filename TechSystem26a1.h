@@ -82,6 +82,9 @@ public:
         this->students.remove(studentPtr);
     }
 };
+
+Tree<Student> studentSystem;
+Tree<Course> courseSystem;
 public:
     // <DO-NOT-MODIFY> {
     TechSystem();

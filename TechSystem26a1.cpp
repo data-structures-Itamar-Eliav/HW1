@@ -4,9 +4,9 @@
 #include "TechSystem26a1.h"
 
 
-TechSystem::TechSystem()
-{
-    
+TechSystem::TechSystem() {
+    this->studentSystem = new Tree<Student>();
+    this->courseSystem = new Tree<Course>();
 }
 
 TechSystem::~TechSystem()
@@ -16,6 +16,16 @@ TechSystem::~TechSystem()
 
 StatusType TechSystem::addStudent(int studentId)
 {
+    if (studentId <= 0) {return StatusType::INVALID_INPUT}
+    try {
+        Student student = Student(studentId);
+        this->studentSystem.insert(student);
+        return StatusType::SUCCESS;
+    } catch (std::bad_alloc) {
+        return StatusType::ALLOCATION_ERROR;
+    } catch (...) {
+        return StatusType::FAILURE;
+    }
     return StatusType::FAILURE;
 }
 
