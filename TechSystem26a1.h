@@ -17,10 +17,30 @@
 
 class TechSystem {
 private:
-    //
-    // Here you may add anything you want
-    //
-    
+class Student{
+    public:
+        int id;
+        int points;
+        Student() {
+            this->id = 0;
+            this->points = 0;
+        }
+        Student(int id) {
+            this->id = id;
+            this->points = 0;
+        }
+        Student(int id, int points) {
+            this->id = id;
+            this->points = points;
+        }
+
+        bool operator<(const Student& other) const{
+            return this->id < other.id;
+        }
+        bool operator==(const Student& other) const{
+            return this->id == other.id;
+        }
+};
 public:
     // <DO-NOT-MODIFY> {
     TechSystem();
