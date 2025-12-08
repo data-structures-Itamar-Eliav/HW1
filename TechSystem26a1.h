@@ -93,7 +93,7 @@ public:
     }
 };
 
-Tree<Student> studentSystem = Tree<Student>();
+Tree<std::shared_ptr<Student> studentSystem = Tree<Student>();
 Tree<Course> courseSystem = Tree<Course>();
 public:
     // <DO-NOT-MODIFY> {

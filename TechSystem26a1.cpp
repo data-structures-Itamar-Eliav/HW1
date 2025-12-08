@@ -17,7 +17,7 @@ StatusType TechSystem::addStudent(int studentId)
 {
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        Student student = Student(studentId);
+        Student student = new Student(studentId);
         this->studentSystem.insert(student);
         return StatusType::SUCCESS;
     } catch (std::bad_alloc) {
@@ -47,6 +47,10 @@ StatusType TechSystem::removeStudent(int studentId)
 
 StatusType TechSystem::addCourse(int courseId, int points)
 {
+    if (courseId <= 0 || points <= 0) {return StatusType::INVALID_INPUT;}
+    try {
+        Course course = new Course
+    }
     return StatusType::FAILURE;
 }
 
