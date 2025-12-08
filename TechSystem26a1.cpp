@@ -40,7 +40,7 @@ StatusType TechSystem::removeStudent(int studentId)
             return StatusType::FAILURE;
         }
         this->studentSystem.remove(studentPtr);
-
+        return StatusType::SUCCESS;
     } catch (std::bad_alloc) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
@@ -70,7 +70,7 @@ StatusType TechSystem::removeCourse(int courseId)
     if (courseId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         std::shared_ptr<Course> coursePtr = std::make_shared<Course>(courseId);
-        if (this->courseSystem.find(coursePtr)->height != 0){
+        if (!this->courseSystem.find(coursePtr)->key->students.isEmpty()){
             return StatusType::FAILURE;
         }
         this->courseSystem.remove(coursePtr);

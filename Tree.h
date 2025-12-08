@@ -169,9 +169,9 @@ private:
         }
 
         // Traverse the tree to find the insertion point recursively.
-        if (key < node->key) {
+        if (*key < *node->key) {
             node->left = insert(node->left, key);
-        } else if (key > node->key) {
+        } else if (*key > *node->key) {
             node->right = insert(node->right, key);
         } else {
             // Duplicate keys are not allowed, no memory leak here as no new node was created.
@@ -190,9 +190,9 @@ private:
         }
 
         // Traverse the tree to find the node to delete recursively.
-        if (key < node->key) {
+        if (*key < *node->key) {
             node->left = remove(node->left, key);
-        } else if (key > node->key) {
+        } else if (*key > *node->key) {
             node->right = remove(node->right, key);
         } else { // Node with the key found.
             // Two cases - Node with two children, or one/no child:
@@ -239,12 +239,12 @@ private:
         }
 
         // Key found:
-        if (key == node->key) {
+        if (*key == *node->key) {
             return node;
         }
 
         // Traverse left or right:
-        if (key < node->key) {
+        if (*key < *node->key) {
             return find(node->left, key);
         } else {
             return find(node->right, key);
