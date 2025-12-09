@@ -298,8 +298,8 @@ public:
      * @return Pointer to the node with the given key.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    Node<T>* find(const T& key) const {
-        return find(root, key);
+    T& find(const T& key) const {
+        return find(root, key)->key;
     }
 
     /**

@@ -18,6 +18,7 @@
 #include <memory>
 class TechSystem {
 private:
+static int bonusPoints;
 class Student{
     public:
         int id;
@@ -35,8 +36,12 @@ class Student{
         }
         Student(int id, int points) {
             this->id = id;
-            this->points = points;
+            this->points = points - TechSystem::bonusPoints;
             this->numOfCourses = 0;
+        }
+
+        void addPoints(int pts) {
+            this->points += pts;
         }
 
         bool operator<(const Student& other) const{
