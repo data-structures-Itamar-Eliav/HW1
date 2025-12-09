@@ -91,7 +91,7 @@ StatusType TechSystem::enrollStudent(int studentId, int courseId)
         std::shared_ptr<Student> studentPtr =
                 std::make_shared<Student>(studentId);
         courseSystem.find(coursePtr)->
-            students.insert(studentSystem.find(studentPtr));
+                addStudent(studentSystem.find(studentPtr));
         return StatusType::SUCCESS;
     } catch (std::bad_alloc) {
         return StatusType::ALLOCATION_ERROR;
@@ -113,6 +113,7 @@ StatusType TechSystem::completeCourse(int studentId, int courseId)
         //I really don't care
         studentSystem.find(studentPtr)->
         addPoints(courseSystem.find(coursePtr)->points);
+        studentSystem.find(studentPtr)->numOfCourses--;
         courseSystem.find(coursePtr)->removeStudent(studentPtr);
         return StatusType::SUCCESS;
     } catch (std::bad_alloc) {

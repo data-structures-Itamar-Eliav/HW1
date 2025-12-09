@@ -94,7 +94,6 @@ public:
 
     void removeStudent (std::shared_ptr<Student> studentPtr) {
         this->students.remove(studentPtr);
-        studentPtr->numOfCourses--;
     }
 };
 
