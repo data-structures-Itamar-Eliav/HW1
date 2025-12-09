@@ -31,7 +31,7 @@ class Student{
         }
         Student(int id) {
             this->id = id;
-            this->points = 0;
+            this->points = 0 - bonusPoints;
             this->numOfCourses = 0;
         }
         Student(int id, int points) {
