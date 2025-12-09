@@ -18,9 +18,9 @@
 #include <memory>
 class TechSystem {
 private:
-static int bonusPoints;
 class Student{
     public:
+        static int bonusPoints;
         int id;
         int points;
         int numOfCourses;
@@ -36,7 +36,7 @@ class Student{
         }
         Student(int id, int points) {
             this->id = id;
-            this->points = points - TechSystem::bonusPoints;
+            this->points = points - bonusPoints;
             this->numOfCourses = 0;
         }
 

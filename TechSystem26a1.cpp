@@ -3,13 +3,12 @@
 
 #include "TechSystem26a1.h"
 
+int TechSystem::Student::bonusPoints = 0;
 
 TechSystem::TechSystem() {
-    TechSystem::bonusPoints = 0;
 }
 
-TechSystem::~TechSystem()
-{
+TechSystem::~TechSystem(){
     
 }
 
@@ -128,7 +127,7 @@ StatusType TechSystem::awardAcademicPoints(int points)
 {
     if (points <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        TechSystem::bonusPoints += points;
+        Student::bonusPoints += points;
         return StatusType::SUCCESS;
     } catch (std::bad_alloc) {
         return StatusType::ALLOCATION_ERROR;
@@ -136,13 +135,12 @@ StatusType TechSystem::awardAcademicPoints(int points)
     return StatusType::FAILURE;
 }
 
-output_t<int> TechSystem::getStudentPoints(int studentId)
-{
+output_t<int> TechSystem::getStudentPoints(int studentId){
     if (studentId <= 0){return StatusType::INVALID_INPUT;}
     try {
         std::shared_ptr<Student> studentPtr =
                 std::make_shared<Student>(studentId);
-        return studentSystem.find(studentPtr)->points + TechSystem::bonusPoints;
+        return studentSystem.find(studentPtr)->points + Student::bonusPoints;
         return StatusType::SUCCESS;
     } catch(std::bad_alloc) {
         return StatusType::ALLOCATION_ERROR;
