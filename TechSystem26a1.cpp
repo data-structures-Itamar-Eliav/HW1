@@ -11,6 +11,7 @@ TechSystem::~TechSystem() = default;
 
 StatusType TechSystem::addStudent(const int studentId)
 {
+    //PROFILE_SCOPE("addStudent");
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         this->studentSystem.insert(std::make_shared<Student>(studentId));
@@ -25,6 +26,7 @@ StatusType TechSystem::addStudent(const int studentId)
 
 StatusType TechSystem::removeStudent(const int studentId)
 {
+    //PROFILE_SCOPE("removeStudent");
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         if (this->studentSystem.find(studentId)->numOfCourses > 0) {
@@ -42,6 +44,7 @@ StatusType TechSystem::removeStudent(const int studentId)
 
 StatusType TechSystem::addCourse(const int courseId, const int points)
 {
+    //PROFILE_SCOPE("addCourse");
     if (courseId <= 0 || points <= 0) {return StatusType::INVALID_INPUT;}
     try {
         this->courseSystem.insert(std::make_shared<Course>(courseId, points));
@@ -56,6 +59,7 @@ StatusType TechSystem::addCourse(const int courseId, const int points)
 
 StatusType TechSystem::removeCourse(const int courseId)
 {
+    //PROFILE_SCOPE("removeCourse");
     if (courseId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         if (!this->courseSystem.find(courseId)->students.isEmpty()){
@@ -73,6 +77,7 @@ StatusType TechSystem::removeCourse(const int courseId)
 
 StatusType TechSystem::enrollStudent(const int studentId, const int courseId)
 {
+    //PROFILE_SCOPE("enrollStudent");
     if(studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
         courseSystem.find(courseId)->addStudent(studentSystem.find(studentId));
@@ -87,6 +92,7 @@ StatusType TechSystem::enrollStudent(const int studentId, const int courseId)
 
 StatusType TechSystem::completeCourse(const int studentId, const int courseId)
 {
+    //PROFILE_SCOPE("completeCourse");
     if (studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
         const std::shared_ptr<Course>& coursePtr =
