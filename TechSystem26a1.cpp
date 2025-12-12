@@ -102,16 +102,28 @@ StatusType TechSystem::completeCourse(int studentId, int courseId)
 {
     if (studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
+        const std::shared_ptr<Course>& coursePtr =
+            courseSystem.find(std::make_shared<Course>(courseId));
+        const std::shared_ptr<Student>& studentPtr =
+            coursePtr->students.find(std::make_shared<Student>(studentId));
+        studentPtr->addPoints(coursePtr->points);
+        studentPtr->numOfCourses--;
+        coursePtr->removeStudent(studentPtr);
+        /*
         std::shared_ptr<Course> coursePtr =
                 std::make_shared<Course>(courseId);
         std::shared_ptr<Student> studentPtr =
                 std::make_shared<Student>(studentId);
+
+
         //award the points (though we find the course and student twice,
         //I really don't care
+
         studentSystem.find(studentPtr)->
         addPoints(courseSystem.find(coursePtr)->points);
         studentSystem.find(studentPtr)->numOfCourses--;
         courseSystem.find(coursePtr)->removeStudent(studentPtr);
+        */
         return StatusType::SUCCESS;
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
@@ -121,7 +133,7 @@ StatusType TechSystem::completeCourse(int studentId, int courseId)
     return StatusType::FAILURE;
 }
 
-StatusType TechSystem::awardAcademicPoints(int points)
+StatusType TechSystem::awardAcademicPoints(const int points)
 {
     if (points <= 0) {return StatusType::INVALID_INPUT;}
     try {
@@ -133,12 +145,11 @@ StatusType TechSystem::awardAcademicPoints(int points)
     return StatusType::FAILURE;
 }
 
-output_t<int> TechSystem::getStudentPoints(int studentId){
+output_t<int> TechSystem::getStudentPoints(const int studentId){
     if (studentId <= 0){return StatusType::INVALID_INPUT;}
     try {
-        std::shared_ptr<Student> studentPtr =
-                std::make_shared<Student>(studentId);
-        return studentSystem.find(studentPtr)->points + Student::bonusPoints;
+        return studentSystem.find(std::make_shared<Student>(studentId))->points +
+            Student::bonusPoints;
         return StatusType::SUCCESS;
     } catch(std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
