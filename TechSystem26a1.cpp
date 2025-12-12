@@ -5,12 +5,9 @@
 
 int TechSystem::Student::bonusPoints = 0;
 
-TechSystem::TechSystem() {
-}
+TechSystem::TechSystem() = default;
 
-TechSystem::~TechSystem(){
-    
-}
+TechSystem::~TechSystem() = default;
 
 StatusType TechSystem::addStudent(int studentId)
 {
@@ -20,7 +17,7 @@ StatusType TechSystem::addStudent(int studentId)
                 std::make_shared<Student>(studentId);
         this->studentSystem.insert(studentPtr);
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
@@ -40,7 +37,7 @@ StatusType TechSystem::removeStudent(int studentId)
         }
         this->studentSystem.remove(studentPtr);
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
@@ -56,7 +53,7 @@ StatusType TechSystem::addCourse(int courseId, int points)
                 std::make_shared<Course>(courseId, points);
         this->courseSystem.insert(coursePtr);
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
@@ -74,7 +71,7 @@ StatusType TechSystem::removeCourse(int courseId)
         }
         this->courseSystem.remove(coursePtr);
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
@@ -93,7 +90,7 @@ StatusType TechSystem::enrollStudent(int studentId, int courseId)
         courseSystem.find(coursePtr)->
                 addStudent(studentSystem.find(studentPtr));
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
@@ -116,7 +113,7 @@ StatusType TechSystem::completeCourse(int studentId, int courseId)
         studentSystem.find(studentPtr)->numOfCourses--;
         courseSystem.find(coursePtr)->removeStudent(studentPtr);
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
@@ -130,7 +127,7 @@ StatusType TechSystem::awardAcademicPoints(int points)
     try {
         Student::bonusPoints += points;
         return StatusType::SUCCESS;
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     }
     return StatusType::FAILURE;
@@ -143,7 +140,7 @@ output_t<int> TechSystem::getStudentPoints(int studentId){
                 std::make_shared<Student>(studentId);
         return studentSystem.find(studentPtr)->points + Student::bonusPoints;
         return StatusType::SUCCESS;
-    } catch(std::bad_alloc) {
+    } catch(std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;

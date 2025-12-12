@@ -24,23 +24,16 @@ class Student{
         int id;
         int points;
         int numOfCourses;
-        Student() {
-            this->id = 0;
-            this->points = 0;
-            this->numOfCourses = 0;
-        }
-        Student(int id) {
-            this->id = id;
-            this->points = 0 - bonusPoints;
-            this->numOfCourses = 0;
-        }
-        Student(int id, int points) {
+
+        Student(const int id = 0, const int points = 0) {
             this->id = id;
             this->points = points - bonusPoints;
             this->numOfCourses = 0;
         }
 
-        void addPoints(int pts) {
+        ~Student() = default;
+
+        void addPoints(const int pts) {
             this->points += pts;
         }
 
@@ -60,22 +53,12 @@ public:
     int points;
     Tree<std::shared_ptr<Student>> students;
 
-    Course() {
-        this->id = 0;
-        this->points = 0;
-        this->students = Tree<std::shared_ptr<Student>>();
-    }
-    Course(int id) : Course() {
-        this->id = id;
-    }
-    Course(int id, int points) {
+    explicit Course(const int id = 0, const int points = 0) {
         this->id = id;
         this->points = points;
         this->students = Tree<std::shared_ptr<Student>>();
     }
-    ~Course() {
-
-    }
+    ~Course() = default;
 
     bool operator<(const Course& other) const {
         return this->id < other.id;
@@ -87,13 +70,14 @@ public:
         return this->id == other.id;
     }
 
-    void addStudent (std::shared_ptr<Student> studentPtr) {
+    void addStudent (const std::shared_ptr<Student>& studentPtr) {
         this->students.insert(studentPtr);
         studentPtr->numOfCourses++;
     }
 
-    void removeStudent (std::shared_ptr<Student> studentPtr) {
+    void removeStudent (const std::shared_ptr<Student>& studentPtr) {
         this->students.remove(studentPtr);
+        //studentPtr->numOfCourses--;
     }
 };
 
