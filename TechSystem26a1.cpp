@@ -9,13 +9,11 @@ TechSystem::TechSystem() = default;
 
 TechSystem::~TechSystem() = default;
 
-StatusType TechSystem::addStudent(int studentId)
+StatusType TechSystem::addStudent(const int studentId)
 {
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        std::shared_ptr<Student> studentPtr =
-                std::make_shared<Student>(studentId);
-        this->studentSystem.insert(studentPtr);
+        this->studentSystem.insert(std::make_shared<Student>(studentId));
         return StatusType::SUCCESS;
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
@@ -25,17 +23,14 @@ StatusType TechSystem::addStudent(int studentId)
     return StatusType::FAILURE;
 }
 
-StatusType TechSystem::removeStudent(int studentId)
+StatusType TechSystem::removeStudent(const int studentId)
 {
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        std::shared_ptr<Student> studentPtr =
-                std::make_shared<Student>(studentId);
-
-        if (this->studentSystem.find(studentPtr)->numOfCourses > 0) {
+        if (this->studentSystem.find(studentId)->numOfCourses > 0) {
             return StatusType::FAILURE;
         }
-        this->studentSystem.remove(studentPtr);
+        this->studentSystem.remove(studentId);
         return StatusType::SUCCESS;
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
@@ -45,13 +40,11 @@ StatusType TechSystem::removeStudent(int studentId)
     return StatusType::FAILURE;
 }
 
-StatusType TechSystem::addCourse(int courseId, int points)
+StatusType TechSystem::addCourse(const int courseId, const int points)
 {
     if (courseId <= 0 || points <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        std::shared_ptr<Course> coursePtr =
-                std::make_shared<Course>(courseId, points);
-        this->courseSystem.insert(coursePtr);
+        this->courseSystem.insert(std::make_shared<Course>(courseId, points));
         return StatusType::SUCCESS;
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
@@ -61,15 +54,14 @@ StatusType TechSystem::addCourse(int courseId, int points)
     return StatusType::FAILURE;
 }
 
-StatusType TechSystem::removeCourse(int courseId)
+StatusType TechSystem::removeCourse(const int courseId)
 {
     if (courseId <= 0) {return StatusType::INVALID_INPUT;}
     try {
-        std::shared_ptr<Course> coursePtr = std::make_shared<Course>(courseId);
-        if (!this->courseSystem.find(coursePtr)->students.isEmpty()){
+        if (!this->courseSystem.find(courseId)->students.isEmpty()){
             return StatusType::FAILURE;
         }
-        this->courseSystem.remove(coursePtr);
+        this->courseSystem.remove(courseId);
         return StatusType::SUCCESS;
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
@@ -79,16 +71,11 @@ StatusType TechSystem::removeCourse(int courseId)
     return StatusType::FAILURE;
 }
 
-StatusType TechSystem::enrollStudent(int studentId, int courseId)
+StatusType TechSystem::enrollStudent(const int studentId, const int courseId)
 {
     if(studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
-        std::shared_ptr<Course> coursePtr =
-                std::make_shared<Course>(courseId);
-        std::shared_ptr<Student> studentPtr =
-                std::make_shared<Student>(studentId);
-        courseSystem.find(coursePtr)->
-                addStudent(studentSystem.find(studentPtr));
+        courseSystem.find(courseId)->addStudent(studentSystem.find(studentId));
         return StatusType::SUCCESS;
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
@@ -98,14 +85,14 @@ StatusType TechSystem::enrollStudent(int studentId, int courseId)
     return StatusType::FAILURE;
 }
 
-StatusType TechSystem::completeCourse(int studentId, int courseId)
+StatusType TechSystem::completeCourse(const int studentId, const int courseId)
 {
     if (studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
         const std::shared_ptr<Course>& coursePtr =
-            courseSystem.find(std::make_shared<Course>(courseId));
+            courseSystem.find(courseId);
         const std::shared_ptr<Student>& studentPtr =
-            coursePtr->students.find(std::make_shared<Student>(studentId));
+            coursePtr->students.find(studentId);
         studentPtr->addPoints(coursePtr->points);
         studentPtr->numOfCourses--;
         coursePtr->removeStudent(studentPtr);
@@ -148,7 +135,7 @@ StatusType TechSystem::awardAcademicPoints(const int points)
 output_t<int> TechSystem::getStudentPoints(const int studentId){
     if (studentId <= 0){return StatusType::INVALID_INPUT;}
     try {
-        return studentSystem.find(std::make_shared<Student>(studentId))->points +
+        return studentSystem.find(studentId)->points +
             Student::bonusPoints;
         return StatusType::SUCCESS;
     } catch(std::bad_alloc&) {

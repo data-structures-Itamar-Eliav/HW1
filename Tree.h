@@ -183,16 +183,16 @@ private:
     }
 
     // Delete:
-    Node<T>* remove(Node<T>* node, const T& key) {
+    Node<T>* remove(Node<T>* node, const int& key) {
         // Key is not in Tree.
         if (node == nullptr) {
             throw KeyNotFoundException();
         }
 
         // Traverse the tree to find the node to delete recursively.
-        if (*key < *node->key) {
+        if (*node->key > key) {
             node->left = remove(node->left, key);
-        } else if (*key > *node->key) {
+        } else if (*node->key < key) {
             node->right = remove(node->right, key);
         } else { // Node with the key found.
             // Two cases - Node with two children, or one/no child:
@@ -202,7 +202,7 @@ private:
                 // Get the smallest node in the right subtree:
                 Node<T>* temp = minValueNode(node->right);
                 node->key = temp->key; // Copy data, no memory problems.
-                node->right = remove(node->right, temp->key); // delete the min node.
+                node->right = remove(node->right, int(*temp->key)); // delete the min node.
             } else {
                 // if we reach here, the node has at most one child.
                 // Get the non-null child, if any:
@@ -232,19 +232,19 @@ private:
      * @return Pointer to the node with the given key.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    Node<T>* find(Node<T>* node, const T& key) const {
+    Node<T>* find(Node<T>* node, const int& key) const {
         // Not in tree:
         if (node == nullptr) {
             throw KeyNotFoundException();
         }
 
         // Key found:
-        if (*key == *node->key) {
+        if (*node->key == key) {
             return node;
         }
 
         // Traverse left or right:
-        if (*key < *node->key) {
+        if (*node->key > key) {
             return find(node->left, key);
         } else {
             return find(node->right, key);
@@ -287,7 +287,7 @@ public:
      * @param key The key to remove.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    void remove(const T& key) {
+    void remove(const int key) {
         root = remove(root, key);
     }
 
@@ -298,7 +298,7 @@ public:
      * @return Pointer to the node with the given key.
      * @throws KeyNotFoundException if the key is not found in the tree.
      */
-    T& find(const T& key) const {
+    T& find(const int& key) const {
         return find(root, key)->key;
     }
 

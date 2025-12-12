@@ -40,12 +40,22 @@ class Student{
         bool operator<(const Student& other) const{
             return this->id < other.id;
         }
+        bool operator<(const int other) const {
+            return this->id < other;
+        }
         bool operator>(const Student& other) const{
             return this->id > other.id;
+        }
+        bool operator>(const int other) const {
+            return this->id > other;
         }
         bool operator==(const Student& other) const{
             return this->id == other.id;
         }
+        bool operator==(const int other) const {
+            return this->id == other;
+        }
+    explicit operator int() const { return id; }
 };
 class Course{
 public:
@@ -63,12 +73,22 @@ public:
     bool operator<(const Course& other) const {
         return this->id < other.id;
     }
+    bool operator<(const int other) const {
+        return this->id < other;
+    }
     bool operator>(const Course& other) const {
         return this->id > other.id;
+    }
+    bool operator>(const int other) const {
+        return this->id > other;
     }
     bool operator==(const Course& other) const {
         return this->id == other.id;
     }
+    bool operator==(const int other) const {
+        return this->id == other;
+    }
+    explicit operator int() const { return id; }
 
     void addStudent (const std::shared_ptr<Student>& studentPtr) {
         this->students.insert(studentPtr);
@@ -76,7 +96,7 @@ public:
     }
 
     void removeStudent (const std::shared_ptr<Student>& studentPtr) {
-        this->students.remove(studentPtr);
+        this->students.remove(studentPtr->id);
         //studentPtr->numOfCourses--;
     }
 };
