@@ -16,6 +16,13 @@
 #include "wet1util.h"
 #include "Tree.h"
 #include <memory>
+
+/**
+ * @brief TechSystem class managing students and courses.
+ *
+ * Students and Courses are stored in AVL trees for efficient access.
+ * All Classes are saved as shared pointers to manage memory automatically.
+ */
 class TechSystem {
 private:
 class Student{
@@ -101,8 +108,10 @@ public:
     }
 };
 
+// AVL Trees:
 Tree<std::shared_ptr<Student>> studentSystem = Tree<std::shared_ptr<Student>>();
 Tree<std::shared_ptr<Course>> courseSystem = Tree<std::shared_ptr<Course>>();
+
 public:
     // <DO-NOT-MODIFY> {
     TechSystem();

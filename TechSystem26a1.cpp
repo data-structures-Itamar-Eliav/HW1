@@ -11,7 +11,6 @@ TechSystem::~TechSystem() = default;
 
 StatusType TechSystem::addStudent(const int studentId)
 {
-    //PROFILE_SCOPE("addStudent");
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         this->studentSystem.insert(std::make_shared<Student>(studentId));
@@ -21,12 +20,10 @@ StatusType TechSystem::addStudent(const int studentId)
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return StatusType::FAILURE;
 }
 
 StatusType TechSystem::removeStudent(const int studentId)
 {
-    //PROFILE_SCOPE("removeStudent");
     if (studentId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         if (this->studentSystem.find(studentId)->numOfCourses > 0) {
@@ -39,12 +36,10 @@ StatusType TechSystem::removeStudent(const int studentId)
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return StatusType::FAILURE;
 }
 
 StatusType TechSystem::addCourse(const int courseId, const int points)
 {
-    //PROFILE_SCOPE("addCourse");
     if (courseId <= 0 || points <= 0) {return StatusType::INVALID_INPUT;}
     try {
         this->courseSystem.insert(std::make_shared<Course>(courseId, points));
@@ -54,12 +49,10 @@ StatusType TechSystem::addCourse(const int courseId, const int points)
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return StatusType::FAILURE;
 }
 
 StatusType TechSystem::removeCourse(const int courseId)
 {
-    //PROFILE_SCOPE("removeCourse");
     if (courseId <= 0) {return StatusType::INVALID_INPUT;}
     try {
         if (!this->courseSystem.find(courseId)->students.isEmpty()){
@@ -72,12 +65,10 @@ StatusType TechSystem::removeCourse(const int courseId)
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return StatusType::FAILURE;
 }
 
 StatusType TechSystem::enrollStudent(const int studentId, const int courseId)
 {
-    //PROFILE_SCOPE("enrollStudent");
     if(studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
         courseSystem.find(courseId)->addStudent(studentSystem.find(studentId));
@@ -87,43 +78,28 @@ StatusType TechSystem::enrollStudent(const int studentId, const int courseId)
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return StatusType::FAILURE;
 }
 
 StatusType TechSystem::completeCourse(const int studentId, const int courseId)
 {
-    //PROFILE_SCOPE("completeCourse");
     if (studentId <= 0 || courseId <= 0){return StatusType::INVALID_INPUT;}
     try {
         const std::shared_ptr<Course>& coursePtr =
             courseSystem.find(courseId);
         const std::shared_ptr<Student>& studentPtr =
             coursePtr->students.find(studentId);
+
         studentPtr->addPoints(coursePtr->points);
         studentPtr->numOfCourses--;
         coursePtr->removeStudent(studentPtr);
-        /*
-        std::shared_ptr<Course> coursePtr =
-                std::make_shared<Course>(courseId);
-        std::shared_ptr<Student> studentPtr =
-                std::make_shared<Student>(studentId);
 
-
-        //award the points (though we find the course and student twice,
-        //I really don't care
-
-        studentSystem.find(studentPtr)->
-        addPoints(courseSystem.find(coursePtr)->points);
-        studentSystem.find(studentPtr)->numOfCourses--;
-        courseSystem.find(coursePtr)->removeStudent(studentPtr);
-        */
         return StatusType::SUCCESS;
+
     } catch (std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return StatusType::FAILURE;
 }
 
 StatusType TechSystem::awardAcademicPoints(const int points)
@@ -138,16 +114,15 @@ StatusType TechSystem::awardAcademicPoints(const int points)
     return StatusType::FAILURE;
 }
 
-output_t<int> TechSystem::getStudentPoints(const int studentId){
+output_t<int> TechSystem::getStudentPoints(const int studentId)
+{
     if (studentId <= 0){return StatusType::INVALID_INPUT;}
     try {
         return studentSystem.find(studentId)->points +
             Student::bonusPoints;
-        return StatusType::SUCCESS;
     } catch(std::bad_alloc&) {
         return StatusType::ALLOCATION_ERROR;
     } catch (...) {
         return StatusType::FAILURE;
     }
-    return 0;
 }
